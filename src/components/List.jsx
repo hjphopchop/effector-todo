@@ -9,7 +9,7 @@ const List = () => {
   return (
     <>
       {store.todos.map((todo) => (
-        <Card value={todo.message} id={todo.id} />
+        <Card key={todo.id} value={todo.message} id={todo.id} />
       ))}
     </>
   );

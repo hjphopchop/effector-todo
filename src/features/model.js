@@ -1,4 +1,5 @@
 import { createEvent, createStore } from "effector";
+import connectLocalStorage from "effector-localstorage";
 
 export const updateTodo = (todos, id, message) =>
   todos.map((todo) => ({
@@ -21,10 +22,13 @@ export const update = createEvent();
 export const filter = createEvent();
 export const remove = createEvent();
 
-export const $todos = createStore({
-  todos: [],
-  newTodo: "",
-})
+const todosLocalStorage = connectLocalStorage("todos");
+export const $todos = createStore(
+  todosLocalStorage.init({
+    todos: [],
+    newTodo: "",
+  })
+)
   .on(setNewTodo, (state, newTodo) => ({
     ...state,
     newTodo,
@@ -45,3 +49,5 @@ export const $todos = createStore({
     newTodo: "",
     todos: removeTodo(state.todos, id),
   }));
+
+  $todos.watch(todosLocalStorage)
